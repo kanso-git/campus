@@ -11,7 +11,6 @@ import {
   View
 } from 'react-native';
 import MapView from 'react-native-maps';
-import { array } from '../../../../../Users/abdallahkanso/Library/Caches/typescript/2.6/node_modules/@types/get-stream';
 
 const typeLocal = [
   {
@@ -107,13 +106,11 @@ export default class App extends Component{
   }
   colorByLocType = (id) => {
     let locObj =typeLocal.find( l => l.id === id );
-    if(  locObj instanceof array){
-        console.log(`this is an array`);  
-    }
+    
     return '#f7f7f7';
   }
   renderLocals = () =>{
-    const data = require('./demo/locaux_bat_2.json'); 
+    const data = require('./demo/locaux_bat.json'); 
     let maplocals= data.features.map( (f, index) =>{
       let aLatLng = f.geometry.rings[0].map( p => ({
         latitude: this.toWebMercatorY(p[1]),

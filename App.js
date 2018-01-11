@@ -11,7 +11,7 @@ import {
   View
 } from 'react-native';
 import MapView from 'react-native-maps';
-
+const originShift = 2 * Math.PI * 6378137 / 2.0;
 const typeLocal = [
   {
     "id": 1,
@@ -92,22 +92,19 @@ export default class App extends Component{
 
  
   toWebMercatorY = (latitude) => {
-   
-    const originShift = 2 * Math.PI * 6378137 / 2.0;
       let lat = (latitude / originShift) * 180.0;
       return   lat = 180 / Math.PI * (2 * Math.atan( Math.exp( lat * Math.PI / 180.0)) - Math.PI / 2.0);
   }
   
-  // below formula converts 4326 longitude to 102100 longitude
+  // below formula to project a point to a coordinate
   toWebMercatorX= (longitude) =>{
-    const originShift = 2 * Math.PI * 6378137 / 2.0;
-    const lon = (longitude / originShift) * 180.0;
-  return lon;
+     return (longitude / originShift) * 180.0;
   }
   colorByLocType = (id) => {
-    let locObj =typeLocal.find( l => l.id === id );
-    
-    return '#f7f7f7';
+    let locObj =typeLocal.filter( (l) => {
+      return l.id === id;
+    } );
+    return locObj.length >0 ? locObj[0].color :'#f7f7f7';
   }
   renderLocals = () =>{
     const data = require('./demo/locaux_bat.json'); 
@@ -138,7 +135,7 @@ export default class App extends Component{
     return (
       <View style={styles.container}>
        <MapView style = {styles.map}
-        mapType ={'satellite'}
+        
         showsCompass
         region={{
             latitude: 46.99179,
